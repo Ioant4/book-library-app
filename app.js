@@ -108,6 +108,9 @@ resultsContainer.addEventListener("click", function(e) {
             <div class="book-info-sash">
                 <h4>${title}</h4>
                 <p>${author}</p>
+                <div class="rmv-btn">
+                    <span>&minus;</span>
+                </div>
             </div>
         `;
 
