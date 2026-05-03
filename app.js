@@ -4,6 +4,9 @@ const homebtn = document.getElementById("home-btn");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-btn");
 const searchResults = document.getElementById("search-results")
+
+
+
 let isSearching = false;
 
 button.addEventListener("click", function(){

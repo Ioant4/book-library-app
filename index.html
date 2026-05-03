@@ -10,20 +10,32 @@
     <header>
         <h1>Library App</h1>
     </header>
-    <main id="library-grid">
-    
-        <div class="book-card add-button" id="add-book-btn">
-            <span>+</span>
-        </div> 
-        <div class="search-panel" id="search-overlay">
-            <input type="text" class="search-input" id="search-input">
-            <div class="search-home">
-                <div class="home-btn" id="home-btn"><span>Home</span></div>     
-                <div class="home-btn" id="search-btn"><span>Search</span></div>  
-            </div>
-            <div class="search-results" id="search-results"></div>     
-            </div>       
+    <main>
+        <div id="library-grid">
+            <div class="book-card add-button" id="add-book-btn">
+                <span>+</span>
+            </div> 
+       
+            <div class="search-panel" id="search-overlay">
+                <input type="text" class="search-input" id="search-input">
+                <div class="search-home">
+                    <div class="home-btn" id="home-btn"><span>Home</span></div>     
+                    <div class="home-btn" id="search-btn"><span>Search</span></div>  
+                </div>
+                <div class="search-results" id="search-results"></div>     
+                </div>       
+            </div>    
         </div>
+        
+        <div class="custom-overlay">
+            <button class="custom-btn" style="width: 10vw; background-color: #BFA28C;">Close</button>
+            <button class="custom-btn">Custom Image</button>
+            <h3>Author: </h3>
+            <input type="text" placeholder="Enter Author">
+            <h3>Book Name: </h3>
+            <input type="text" placeholder="Enter Book Name">
+        </div>
+        
     </main>
     <footer>
     </footer>
