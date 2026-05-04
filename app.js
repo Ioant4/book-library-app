@@ -4,11 +4,18 @@ const homebtn = document.getElementById("home-btn");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-btn");
 const searchResults = document.getElementById("search-results")
-
+const customBtn = document.getElementById("custom-btn");
+const customOverlay = document.getElementById("custom-overlay");
+let libraryBooks = [];
+let bookUpdating = null;
 
 
 let isSearching = false;
 
+customBtn.addEventListener("click", function(){ // It's for the Close button in the custom menu.
+    customOverlay.style.display = "none"; // Sets the display to none in css.
+})
+// WHEN I PRESS THE '+' BUTTON AT THE HOME SCREEN.
 button.addEventListener("click", function(){
     overlay.style.display = "flex";
     searchResults.style.display = "none";
@@ -109,37 +116,56 @@ function createCardHTML(title, author, thumbnail) {
     `;
 }
 
+function reDrawGrid(){
+    const libraryGrid = document.getElementById("library-grid");
+    const addButton = document.getElementById("add-book-btn");
+    // Removing all the existing books in the library grid.
+    const existingBooks = document.querySelectorAll('.book-card.info-sash-card');
+    existingBooks.forEach(bookCard => {
+        bookCard.remove();
+    });
 
-const resultsContainer = document.getElementById("search-results");
-
-resultsContainer.addEventListener("click", function(e) {
-    if (e.target.classList.contains("add-btn")) { 
-        const imgUrl = e.target.getAttribute("data-img");
-        const title = e.target.getAttribute("data-title");  
-        const author = e.target.getAttribute("data-author"); 
-
-        const libraryGrid = document.getElementById("library-grid");
+    libraryBooks.forEach((book, index) => {
         const newBook = document.createElement("div");
         newBook.classList.add("book-card", "info-sash-card"); 
-
-        const index = document.querySelectorAll('.book-card').length;
         newBook.setAttribute('data-index', index);
-        // HTML for card after we picked a book.
+
         newBook.innerHTML = ` 
-            <img src="${imgUrl}" alt="${title}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+            <img src="${book.cover}" alt="${book.title}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
             <div class="book-info-sash">
                 <div>
-                    <h4>${title}</h4>
-                    <p>${author}</p>
+                    <h4>${book.title}</h4>
+                    <p>${book.author}</p>
                 </div>
                 <div class="rmv-btn">
                     <span>&minus;</span>
                 </div>
             </div>
         `;
+
         libraryGrid.insertBefore(newBook, document.getElementById("add-book-btn"));
-        
+    });
+}
+
+// WHEN I PRESS THE '+' BUTTON IN THE SEARCH RESULTS SCREEN CONTAINER.
+const resultsContainer = document.getElementById("search-results");
+resultsContainer.addEventListener("click", function(e) {
+    if (e.target.classList.contains("add-btn")) { 
+        const imgUrl = e.target.getAttribute("data-img");
+        const title = e.target.getAttribute("data-title");  
+        const author = e.target.getAttribute("data-author"); 
+
+        const brandNewBook = {
+            id: Date.now(),
+            title: title,
+            author: author,
+            cover: imgUrl
+        };
+
+        libraryBooks.push(brandNewBook);
         overlay.style.display = "none";
+        reDrawGrid();
+
     }
 });
 
