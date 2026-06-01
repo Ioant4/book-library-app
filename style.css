@@ -295,3 +295,14 @@ h1{
     color: #6d4c3d;
 
 }
+
+#choice-overlay{
+    bottom: auto;
+    right: auto;
+    margin: 0;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+    max-height: 50vh;
+}

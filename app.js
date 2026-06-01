@@ -6,6 +6,12 @@ const searchBtn = document.getElementById("search-btn");
 const searchResults = document.getElementById("search-results")
 const customBtn = document.getElementById("custom-btn");
 const customOverlay = document.getElementById("custom-overlay");
+// Choice Panel Elements
+const choiceOverlay = document.getElementById("choice-overlay");
+const chooseSearchBtn = document.getElementById("choose-search-btn");
+const chooseCustomBtn = document.getElementById("choose-custom-btn");
+const closeChoiceBtn = document.getElementById("close-choice-btn");
+
 let libraryBooks = [];
 let bookUpdating = null;
 
@@ -15,13 +21,36 @@ let isSearching = false;
 customBtn.addEventListener("click", function(){ // It's for the Close button in the custom menu.
     customOverlay.style.display = "none"; // Sets the display to none in css.
 })
-// WHEN I PRESS THE '+' BUTTON AT THE HOME SCREEN.
+// If they press the '+' button at home screen.
 button.addEventListener("click", function(){
-    overlay.style.display = "flex";
+    choiceOverlay.style.display = "flex"; 
+    
+    // Ensure the other menus are closed just in case
+    overlay.style.display = "none";
+    customOverlay.style.display = "none";
     searchResults.style.display = "none";
+    
+    // Reset search fields from previous uses
     const resultsContainer = document.getElementById("search-results");
     resultsContainer.innerHTML = "";
     searchInput.value = "";
+});
+
+//  If they click "Search Database"
+chooseSearchBtn.addEventListener("click", function() {
+    choiceOverlay.style.display = "none"; // Hide choice panel
+    overlay.style.display = "flex";       // Open API Search
+});
+
+//  ROUTE: If they click "Add Manually"
+chooseCustomBtn.addEventListener("click", function() {
+    choiceOverlay.style.display = "none"; // Hide choice panel
+    customOverlay.style.display = "flex"; // Open Custom Book panel
+});
+
+//  CANCEL: If they change their mind
+closeChoiceBtn.addEventListener("click", function() {
+    choiceOverlay.style.display = "none";
 });
 
 homebtn.addEventListener("click", function(){
@@ -119,6 +148,7 @@ function createCardHTML(title, author, thumbnail) {
 function reDrawGrid(){
     const libraryGrid = document.getElementById("library-grid");
     const addButton = document.getElementById("add-book-btn");
+    
     // Removing all the existing books in the library grid.
     const existingBooks = document.querySelectorAll('.book-card.info-sash-card');
     existingBooks.forEach(bookCard => {
@@ -130,8 +160,13 @@ function reDrawGrid(){
         newBook.classList.add("book-card", "info-sash-card"); 
         newBook.setAttribute('data-index', index);
 
+        // ONLY draw an image if a cover URL/data exists
+        const imageHTML = book.cover 
+            ? `<img src="${book.cover}" alt="${book.title}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">` 
+            : ``; 
+
         newBook.innerHTML = ` 
-            <img src="${book.cover}" alt="${book.title}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+            ${imageHTML}
             <div class="book-info-sash">
                 <div>
                     <h4>${book.title}</h4>
@@ -171,10 +206,68 @@ resultsContainer.addEventListener("click", function(e) {
 
 const libraryGrid = document.getElementById("library-grid");
 
-libraryGrid.addEventListener("click", function(e){ // Event listener for the whole grid, and using
-    const removeBtn = e.target.closest(".rmv-btn"); // e as the remove button.
+// The fully synced deletion code
+libraryGrid.addEventListener("click", function(e){ 
+    const removeBtn = e.target.closest(".rmv-btn"); 
     if(removeBtn) {
         const cardToRemove = removeBtn.closest(".book-card");
-        cardToRemove.remove();
+        const arrayIndex = cardToRemove.getAttribute('data-index');
+        libraryBooks.splice(arrayIndex, 1);
+        reDrawGrid();
     }
 })
+
+// --- Custom Book Form Logic ---
+const fileUpload = document.getElementById("file-upload");
+const triggerUploadBtn = document.getElementById("trigger-upload-btn");
+const customAuthorInput = document.getElementById("custom-author");
+const customTitleInput = document.getElementById("custom-title");
+const saveCustomBtn = document.getElementById("save-custom-btn");
+
+let currentCustomImage = null; 
+
+// Trigger hidden file input
+triggerUploadBtn.addEventListener("click", function() {
+    fileUpload.click();
+});
+
+// Read and convert uploaded image
+fileUpload.addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            currentCustomImage = event.target.result; 
+            triggerUploadBtn.textContent = "Image Selected ✓"; 
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Save the custom book
+saveCustomBtn.addEventListener("click", function() {
+    const title = customTitleInput.value.trim();
+    const author = customAuthorInput.value.trim();
+
+    if (title === "" || author === "") {
+        alert("Please enter both a title and an author!");
+        return;
+    }
+
+    const brandNewBook = {
+        id: Date.now(),
+        title: title,
+        author: author,
+        cover: currentCustomImage 
+    };
+
+    libraryBooks.push(brandNewBook);
+    reDrawGrid();
+
+    // Reset modal
+    customTitleInput.value = "";
+    customAuthorInput.value = "";
+    currentCustomImage = null;
+    triggerUploadBtn.textContent = "Custom Image";
+    customOverlay.style.display = "none";
+});

@@ -23,18 +23,34 @@
                     <div class="home-btn" id="search-btn"><span>Search</span></div>  
                 </div>
                 <div class="search-results" id="search-results"></div>     
-                </div>       
-            </div>    
+            </div>       
+        </div>    
+        
+         
+        <div class="custom-overlay" id="custom-overlay" style="display: none">
+            <button class="custom-btn" id="custom-btn" style="width: 10vw; background-color: #BFA28C;">Close</button>
+            
+            <input type="file" id="file-upload" accept="image/*" style="display: none;">
+            <button class="custom-btn" id="trigger-upload-btn">Custom Image</button>
+
+            <h3>Author: </h3>
+            <input type="text" id="custom-author" placeholder="Enter Author">
+            
+            <h3>Book Name: </h3>
+            <input type="text" id="custom-title" placeholder="Enter Book Name">
+            
+            <button class="custom-btn" id="save-custom-btn" style="background-color: #A98B76;">Save Book</button>
+        </div>
+
+        <div class="custom-overlay" id="choice-overlay" style="display: none; padding: 40px;">
+            <h2 style="color: #6d4c3d; margin-bottom: 20px; text-align: center;">How would you like to add a book?</h2>
+            
+            <button class="custom-btn" id="choose-search-btn" style="width: 80%;">Search Database</button>
+            <button class="custom-btn" id="choose-custom-btn" style="width: 80%;">Add Manually</button>
+            
+            <button class="custom-btn" id="close-choice-btn" style="width: 50%; background-color: #BFA28C; margin-top: 25px;">Cancel</button>
         </div>
         
-        <div class="custom-overlay" id="custom-overlay">
-            <button class="custom-btn" id="custom-btn" style="width: 10vw; background-color: #BFA28C;">Close</button>
-            <button class="custom-btn">Custom Image</button>
-            <h3>Author: </h3>
-            <input type="text" placeholder="Enter Author">
-            <h3>Book Name: </h3>
-            <input type="text" placeholder="Enter Book Name">
-        </div>
         
     </main>
     <footer>
